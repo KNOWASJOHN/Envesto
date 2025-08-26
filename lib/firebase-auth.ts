@@ -15,9 +15,15 @@ import { auth, db } from './firebase';
 export interface UserData {
   uid: string;
   email: string;
-  displayName?: string;
+  displayName: string;
   createdAt: string;
   lastLogin: string;
+  phone?: string;
+  job?: string;
+  state?: string;
+  avgMonthlyIncome?: number;
+  age?: number;
+  name?: string;
 }
 
 export const registerUser = async (email: string, password: string, displayName?: string): Promise<UserData> => {

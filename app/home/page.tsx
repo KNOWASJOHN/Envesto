@@ -9,7 +9,7 @@ import { Calculator, Bot, TrendingUp, Shield, Clock, Target } from "lucide-react
 
 export default function HomePage() {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, userData } = useAuth()
 
   const handleExpenseCalculator = () => {
     router.push("/expense")
@@ -47,10 +47,12 @@ export default function HomePage() {
       <Header />
 
       <main className="container mx-auto px-4 py-8 max-w-6xl">
-        {user?.name && (
+        {(userData?.displayName || user?.email) && (
           <div className="mb-8 text-center">
             <p className="text-envesto-gray-600">Welcome back,</p>
-            <h2 className="text-2xl font-semibold text-envesto-navy">{user.name}!</h2>
+            <h2 className="text-2xl font-semibold text-envesto-navy">
+              {userData?.displayName || user?.email?.split('@')[0]}!
+            </h2>
           </div>
         )}
 
