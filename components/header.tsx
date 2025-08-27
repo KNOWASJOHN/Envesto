@@ -28,8 +28,11 @@ export default function Header() {
           <User className="h-5 w-5 text-envesto-gray-600" />
         </Button>
 
-        <div className="absolute left-1/2 transform -translate-x-1/2">
-          <h1 className="text-lg font-bold text-envesto-navy">EnVesto</h1>
+        <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-2">
+          <a href="/home" className="flex items-center gap-2">
+            <img src="/logo_1.svg" alt="EnVesto Logo" className="h-8 w-8" />
+            <h1 className="text-lg font-bold text-envesto-navy">EnVesto</h1>
+          </a>
         </div>
 
         {/* Cart Icon - Right */}

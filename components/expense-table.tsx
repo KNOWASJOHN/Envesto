@@ -6,19 +6,27 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Trash2, Plus } from "lucide-react"
 
-interface ExpenseItem {
-  id: string
-  name: string
-  price: string
-  quantity: string
-}
+import { ExpenseItem } from "@/lib/expense"
+
+import { saveExpenseList } from "@/lib/expense"
+import { useToast } from "@/components/ui/use-toast"
+import { useAuth } from "@/contexts/auth-context"
 
 interface ExpenseTableProps {
   onCalculate: (totalExpense: number) => void
 }
 
 export default function ExpenseTable({ onCalculate }: ExpenseTableProps) {
-  const [items, setItems] = useState<ExpenseItem[]>([{ id: "1", name: "", price: "", quantity: "1" }])
+  const [items, setItems] = useState<ExpenseItem[]>([{ 
+    id: "1", 
+    name: "", 
+    price: "", 
+    quantity: "1",
+    timestamp: Date.now()
+  }])
+  const [isSaving, setIsSaving] = useState(false)
+  const { toast } = useToast()
+  const { user } = useAuth()
 
   const addRow = () => {
     const newItem: ExpenseItem = {
@@ -26,6 +34,7 @@ export default function ExpenseTable({ onCalculate }: ExpenseTableProps) {
       name: "",
       price: "",
       quantity: "1",
+      timestamp: Date.now()
     }
     setItems([...items, newItem])
   }
@@ -40,7 +49,7 @@ export default function ExpenseTable({ onCalculate }: ExpenseTableProps) {
     setItems(items.map((item) => (item.id === id ? { ...item, [field]: value } : item)))
   }
 
-  const calculateTotal = () => {
+  const calculateTotal = async () => {
     const total = items.reduce((sum, item) => {
       const price = Number.parseFloat(item.price) || 0
       const quantity = Number.parseInt(item.quantity) || 0
@@ -48,6 +57,25 @@ export default function ExpenseTable({ onCalculate }: ExpenseTableProps) {
     }, 0)
 
     onCalculate(total)
+
+    if (user && items.some(item => item.name && item.price)) {
+      try {
+        setIsSaving(true)
+        await saveExpenseList(user.uid, items, total)
+        toast({
+          title: "Success",
+          description: "Expense list saved successfully",
+        })
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to save expense list",
+          variant: "destructive",
+        })
+      } finally {
+        setIsSaving(false)
+      }
+    }
   }
 
   const getItemTotal = (item: ExpenseItem) => {
@@ -129,8 +157,12 @@ export default function ExpenseTable({ onCalculate }: ExpenseTableProps) {
               <Plus className="h-4 w-4 mr-2" />
               Add Row
             </Button>
-            <Button onClick={calculateTotal} className="bg-envesto-teal hover:bg-envesto-teal/90 text-white">
-              Calculate Total
+            <Button 
+              onClick={calculateTotal} 
+              className="bg-envesto-teal hover:bg-envesto-teal/90 text-white"
+              disabled={isSaving}
+            >
+              {isSaving ? 'Saving...' : 'Calculate & Save'}
             </Button>
           </div>
         </div>

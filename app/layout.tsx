@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   title: "EnVesto - Earn and Invest",
   description: "Financial planning for gig workers and variable income earners",
   generator: "v0.app",
+  icons: {
+    icon: '/logo_1.svg',
+    apple: '/logo_1.svg',
+  },
 }
 
 export default function RootLayout({
