@@ -11,9 +11,10 @@ interface AuthFormProps {
   mode: "login" | "signup"
   onSubmit: (email: string, password: string) => Promise<void>
   isLoading: boolean
+  error?: string
 }
 
-export default function AuthForm({ mode, onSubmit, isLoading }: AuthFormProps) {
+export default function AuthForm({ mode, onSubmit, isLoading, error }: AuthFormProps) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
@@ -80,6 +81,12 @@ export default function AuthForm({ mode, onSubmit, isLoading }: AuthFormProps) {
               {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
             </div>
 
+            {error && (
+              <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm mb-4">
+                {error}
+              </div>
+            )}
+            
             <Button
               type="submit"
               className="w-full bg-envesto-teal hover:bg-envesto-teal/90 text-white"

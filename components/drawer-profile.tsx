@@ -263,21 +263,6 @@ const DrawerProfile = ({ isOpen, onClose }: DrawerProfileProps) => {
                         </motion.div>
                       </div>
                     </motion.div>
-
-                    {/* Edit Profile Button */}
-                    <motion.div
-                      initial={fadeInUp.initial}
-                      animate={fadeInUp.animate}
-                      transition={{ delay: staggerDelay * 15 }}
-                    >
-                      <Button 
-                        variant="outline" 
-                        className="w-full border-envesto-teal text-envesto-teal hover:bg-envesto-teal hover:text-white"
-                        onClick={() => console.log('Edit profile clicked')}
-                      >
-                        Edit Profile
-                      </Button>
-                    </motion.div>
                   </CardContent>
                 </Card>
               </div>
